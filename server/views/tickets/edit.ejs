@@ -1,0 +1,203 @@
+<% include ../partials/header.ejs %>
+<% include ../partials/navbar.ejs %>
+<main class="container">
+    <h1></h1>
+    <div class="row">
+<script>
+    function sync()
+    {
+    var n1 = document.getElementById('n1');
+    var n2 = document.getElementById('n2');
+    var n3 = document.getElementById('n3');
+    var n4 = document.getElementById('n4');
+    var n5 = document.getElementById('n5');
+    var n6 = document.getElementById('n6');
+    var date = document.getElementById('dateView');
+    n2.value = n4.value + Date.now() + '/' + n5.value + '/'+ n6.value + '/' + n1.value + '/' + n3.value + '/';
+    }
+</script>
+
+<form method="post">
+    <div class="container">
+        <!-- Container holding ticket information -->
+        <div class="container col-md-6">
+            <h2>Ticket Information</h2>
+            <!-- Ticket Number -->
+            <div class="row">
+                <div class="col-xs-5">
+                    <label class="form-control" for="ticketNum">Ticket Number</label>
+                </div>
+                <div class="col-xs-7">
+                    <input class="form-control" name="ticketNum" readonly value="<%= ticket.ticketNum %>" />
+                </div>
+            </div>
+            <!-- Date Created -->
+            <div class="row">
+                <div class="col-xs-5">
+                    <label class="form-control" for="ticketCreated">Date Created</label>
+                </div>
+                <div class="col-xs-7">
+                    <!-- Grab date from epoche value -->
+                    <input  hidden readonly name="ticketCreated" value="<%= ticket.ticketCreated %>" />
+                    <!-- Convert for user readability -->
+                    <input class="form-control" readonly name="dateView" value="<%= Date(ticket.ticketCreated).slice(0,-32) %>" />
+                </div>
+            </div>
+            <!-- Ticket Owner -->
+            <div class="row">
+                <div class="col-xs-5">
+                    <label class="form-control" for="ticketOwner">Ticket Creator</label>
+                </div>
+                <div class="col-xs-7">
+                    <input class="form-control" name="ticketOwner" required type="text" readonly value="<%= ticket.ticketOwner %>">
+                </div>
+            </div>
+            <!-- Affected User -->
+            <div class="row">
+                <div class="col-xs-5">
+                    <label class="form-control" for="ticketUser">Affected User</label>
+                </div>
+                <div class="col-xs-7">
+                    <input class="form-control" name="ticketUser" required type="text" readonly value="<%= ticket.ticketUser %>">
+                </div>
+            </div>
+            <!-- User Contact -->
+            <div class="row">
+                <div class="col-xs-5">
+                    <label class="form-control" for="ticketUserContact">User Contact</label>
+                </div>
+                <div class="col-xs-7">
+                    <input class="form-control" name="ticketUserContact" required type="text" readonly value="<%= ticket.ticketUserContact %>">
+                </div>
+            </div>
+            <!-- Ticket Description -->
+            <div class="row">
+                <div class="col-xs-12">
+                    <label class="form-control" for="ticketDesc">Ticket Description</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <textarea class="form-control" rows="3" readonly placeholder="<%= ticket.ticketDesc %>"></textarea>
+                </div>
+            </div>
+        <!-- Information for table don't delete (IncidentNarrative)-->
+        <input hidden name="table" id="table" value="<%= ticket.ticketLife %>"></input>
+        </div>
+        <!-- Container holding Update information -->
+        <div class="container col-md-6">
+            <h2>Update Information</h2>
+            <!-- User History Box -->
+            <input hidden id="n4" value="<%= ticket.ticketLife %>" />
+            <input type="text" hidden name="ticketLife" id="n2" />
+
+            <!-- Ticket Status -->
+            <div class="row">
+                <div class="col-xs-5">
+                    <label class="form-control" for="radioCheck">Username</label>
+                </div>
+                <div class="col-xs-7">
+                    <input class="form-control" required type="text" name="n1" id="n1" onkeyup="sync()" value="Tyler Cadeau">
+                </div>
+            </div>
+            <!-- Priority Level -->
+            <div class="row">
+                <div class="col-xs-5">
+                    <label class="form-control" for="radioCheck">Priority Level</label>
+                </div>
+                <div class="col-xs-7">
+                    <select class="form-control" name="ticketPriority" id="n6">
+                        <option selected disabled><%= ticket.ticketPriority %></option>
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                    </select>
+                </div>
+            </div>
+            <!-- Ticket Status -->
+            <div class="row">
+                <div class="col-xs-5">
+                    <label class="form-control" for="radioCheck">Status</label>
+                </div>
+                <div class="col-xs-7">
+                    <select class="form-control" name="ticketStatus" id="n5">
+                        <option value="Ongoing">Ongoing</option>
+                        <option value="Closed">Closed</option>
+                    </select>
+                </div>
+            </div>
+            <!-- Updates -->
+            <div class="row">
+                <div class="col-xs-12">
+                    <label class="form-control" for="ticketUpdate">Ticket Update</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <textarea class="form-control"required type="text" rows="3" name="ticketUpdate" id="n3" onkeyup="sync()" placeholder="What has changed?"></textarea>
+                </div>
+            </div>
+            <!-- Change to LastUpdate-->
+            <input hidden name="ticketLastUpdate" readonly value="<%= Date.now() %>" />
+            <!-- Buttons-->
+            <br>
+            <br>
+            <div class="row">
+                <div class="col-xs-8">
+                    <button type="submit" class="col-sm btn btn-success btn-block">Update</button>
+                </div>
+                <div class="col-xs-4">
+                    <a href="/tickets/delete/<%= ticket._id %>" title="Delete" onclick="return confirm('Are you sure you want to delete this?');">
+                        <button type="button" class="btn btn-danger btn-block" onclick="copy();">Delete</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<!-- Container holding IncidentNarrative -->
+<div class="container">
+    <table class="table">
+        <caption>
+            <h2>Incident Narrative</h2></caption>
+        <thead>
+            <tr>
+                <th>Number</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Priority</th>
+                <th>Owner</th>
+                <th>Change</th>
+            </tr>
+        </thead>
+        <tbody>
+            <script>
+                //Grab IncidentNarative string and split into array
+                var first = document.getElementById("n4").value;
+                var values = first.split('/');
+                                    
+                //Loop through array and popuate table with results
+                for (i = 0; i < values.length - 1; i = i + 5) 
+                {
+                    //Convert time since Epoch to standated formate
+                    var seconds = values[i] / 1000;
+                    var date = new Date(0);
+                    date.setUTCSeconds(seconds);
+                                                
+                    //Change to simple time for smaller chart
+                    var formated = ("" + date).slice(3, -36);
+                                                
+                    //Create table in javascript out of array
+                    document.write("<tr><td>" + (i / 5) + "</td>");
+                    document.write("<td>" + formated + "</td>");
+                    document.write("<td>" + values[i + 1] + "</td>");
+                    document.write("<td>" + values[i + 2] + "</td>");
+                    document.write("<td>" + values[i + 3] + "</td>");
+                    document.write("<td>" + values[i + 4] + "</td></tr>");
+                }
+            </script>
+        </tbody>
+    </table>
+</div>
+</main>
+<% include ../partials/footer.ejs %>

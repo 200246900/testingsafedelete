@@ -1,0 +1,107 @@
+<% include ../partials/header.ejs %>
+<% include ../partials/navbar.ejs %>
+<main class="container">
+    <!-- Title -->
+    <h1>Tickets</h1>
+
+    <!-- Create New Ticket-->
+    <a href="/tickets/add" class="btn btn-danger">Add a New Ticket </a>
+    
+    <!-- Sorting Buttons-->
+    <a href="javascript:toggleAll();" class="btn btn-primary">Show Open Tickets</a>
+    <a href="javascript:toggleOpen();" class="btn btn-primary">Show All Tickets </a>
+    <!-- Incident Board-->
+    <table class="table table-bordered" name="incidentBoardOpen" id="incidentBoardOpen">
+        <thead>
+            <tr>
+                <th>Ticket Number</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Owner</th>		
+                <th>Opened</th>
+                <th>Last Update</th>
+                <th>Duration</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!--Loop through records and display-->
+            <% for (var i = 0; i < tickets.length; i++) { %>
+                <tr>
+                    <!--Clickable link to edit ticket-->
+                    <td><a href="/tickets/<%= tickets[i]._id %>" title="Edit Article"><%= tickets[i].ticketNum %></a></td>
+                    <td><%= tickets[i].ticketPriority %></td>
+                    <td><%= tickets[i].ticketStatus %></td>	
+                    <td><%= tickets[i].ticketOwner %></td>
+                    <td><%= tickets[i].ticketCreated %></td>
+                    <td><%= tickets[i].ticketLastUpdate %></td>
+                    <!-- Minus current time since epocj against created, divide by 60000 for minutes, * 100 / 100 for rounded to 2 decimals -->
+                    <td><%= Math.round((((Date.now()-tickets[i].ticketCreated)/60000))* 100) / 100 %></td>		
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+    
+    <!-- Incident Board-->
+    <table class="table table-bordered" name="incidentBoardOpen" id="incidentBoardALL">
+        <thead>
+            <tr>
+                <th>Ticket Number</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Owner</th>		
+                <th>Opened</th>
+                <th>Last Update</th>
+                <th>Duration</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!--Loop through records and display-->
+            <% for (var i = 0; i < tickets.length; i++) { %>
+                <tr>
+                    <!--Clickable link to edit ticket-->
+                    <td><a href="/tickets/<%= tickets[i]._id %>" title="Edit Article"><%= tickets[i].ticketNum %></a></td>
+                    <td><%= tickets[i].ticketPriority %></td>
+                    <td><%= tickets[i].ticketStatus %></td>	
+                    <td><%= tickets[i].ticketOwner %></td>
+                    <td><%= tickets[i].ticketCreated %></td>
+                    <td><%= tickets[i].ticketLastUpdate %></td>
+                    <!-- Minus current time since epocj against created, divide by 60000 for minutes, * 100 / 100 for rounded to 2 decimals -->
+                    <td><%= Math.round((((Date.now()-tickets[i].ticketCreated)/60000))* 100) / 100 %></td>		
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+    
+    <!-- ScriptSection-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script>
+        //Function to hide closed tickets
+        $(function () {
+            //CLosed ticket variable
+            var searchString = 'Closed';
+                        
+            //Search table for variable
+            $("#incidentBoardOpen tr td:contains('" + searchString + "')").each(function () {
+                //If variable found
+                if ($(this).text() == searchString) {
+                    //DeleteRow
+                    $(this).parent().remove();
+                }
+            });
+        });
+        //Defaulty Hide all closed tickets
+        $("#incidentBoardALL").hide();
+        //On button click show table with all tickets
+        function toggleAll() {
+            $("#incidentBoardALL").hide();
+            $("#incidentBoardOpen").show();
+        }
+        //On button click show table with only open tickers
+        function toggleOpen() {
+            $("#incidentBoardALL").show();
+            $("#incidentBoardOpen").hide();
+        }
+    </script>
+</script>
+</main>
+<% include ../partials/footer.ejs %>

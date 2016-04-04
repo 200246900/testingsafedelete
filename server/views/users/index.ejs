@@ -1,0 +1,35 @@
+<% include ../partials/header.ejs %>
+<% include ../partials/navbar.ejs %>
+<main class="container">
+    <h1>Users</h1>
+
+    <a href="/users/add">Add a New User</a>
+
+    <table class="table table-bordered" name="incidentBoardOpen" id="incidentBoardOpen">
+        <thead>
+            <tr>
+                <th>DisplayName</th>
+                <th>Email</th>
+                <th>UserName</th>
+                <th>Password</th>	
+                <th>Created</th>
+                <th>Last Update</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!--Loop through records and display-->
+            <% for (var i = 0; i < users.length; i++) { %>
+                <tr>
+                    <!--Clickable link to edit ticket-->
+                    <td><a href="/users/<%= users[i]._id %>" title="Edit Article"><%= users[i].displayName %></a></td>
+                    <td><%= users[i].email %></td>	
+                    <td><%= users[i].username %></td>
+                    <td><%= users[i].password %></td>
+                    <td><%= users[i].created.toDateString() %></td>	
+                    <td><%= users[i].updated.toDateString() %></td>	
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+</main>
+<% include ../partials/footer.ejs %>
