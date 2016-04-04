@@ -20,8 +20,12 @@
             <li><a href="/contact">Contact Us</a></li>
             <li><a href="/tickets">DashBoard</a></li>
             <li><a href="/users">Users</a></li>
+         <% if(displayName) { %>
+            <li class="navbar-text"><i class="fa fa-user"></i> Welcome, <%= displayName %></li>
             <li><a href="/logout"><i class="fa fa-sign-out"></i> Logout</a></li>
+         <% } else { %>
             <li><a href="/login"><i class="fa fa-sign-in"></i> Login</a></li>
+         <% } %>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
